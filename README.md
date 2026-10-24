@@ -29,6 +29,12 @@ This is a starting point for community development, not a promise of playback on
 - Playback uses unofficial YouTube endpoints, which can change or require sign-in. The app stops on sign-in challenges. Universal ad-free playback is not guaranteed.
 - An empty signed-out home feed falls back to local history or a labeled popular-video search.
 
+## Install with ChatGPT or Claude
+
+Use the [AI-assisted installation guide](docs/AI_INSTALL.md), which includes a copy-and-paste prompt, verified WGT download, certificate setup, installation commands and troubleshooting. Local agents can follow [AGENTS.md](AGENTS.md); [CLAUDE.md](CLAUDE.md) imports the same instructions for Claude Code. Assistants without local computer/network tools can guide you through the steps.
+
+Prefer the [downloadable v0.2.0 WGT](https://github.com/giilc/TizenSmartTube/releases/tag/v0.2.0) if you just want to install the app. You still need to sign it for your TV, but you do not need to compile the source.
+
 ## Build
 
 Requires **Node.js 22 or newer**, npm, and **Python 3** on your PATH as `python3`.
