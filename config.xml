@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="https://github.com/giilc/TizenSmartTube" version="0.2.0" viewmodes="maximized">
+  <tizen:application id="StTizen001.Port" package="StTizen001" required_version="6.0"/>
+  <name>SmartTube Tizen</name>
+  <description>Unofficial experimental Tizen adaptation. Search, direct playback and SponsorBlock.</description>
+  <author>SmartTube Tizen contributors</author>
+  <content src="index.html"/>
+  <icon src="icon.png"/>
+  <feature name="http://tizen.org/feature/screen.size.all"/>
+  <access origin="https://youtube.com" subdomains="true"/>
+  <access origin="https://googlevideo.com" subdomains="true"/>
+  <access origin="https://ytimg.com" subdomains="true"/>
+  <access origin="https://sponsor.ajay.app" subdomains="false"/>
+  <access origin="https://jnn-pa.googleapis.com" subdomains="false"/>
+  <tizen:privilege name="http://tizen.org/privilege/internet"/>
+  <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+  <tizen:privilege name="http://developer.samsung.com/privilege/avplay"/>
+  <tizen:profile name="tv-samsung"/>
+  <tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.youtube.com; connect-src https://*.youtube.com https://*.googlevideo.com https://sponsor.ajay.app https://jnn-pa.googleapis.com; img-src 'self' https://*.ytimg.com https://*.ggpht.com; style-src 'self'; media-src blob: https://*.googlevideo.com; object-src 'self'">
+<title>SmartTube Tizen</title><link rel="stylesheet" href="style.css">
+<script src="$WEBAPIS/webapis/webapis.js"></script></head><body>
+<main id="browser">
+ <aside id="sidebar"><button id="quick-search" class="search-circle" aria-label="Search"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg></button>
+ <nav aria-label="Main navigation">
+ <button data-page="home" class="nav-item active"><svg viewBox="0 0 24 24"><path d="m3 10 9-8 9 8v12h-6v-8H9v8H3Z"/></svg>Home</button>
+ <button data-page="search" class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" class="stroke"/></svg>Search</button>
+ <button data-page="music" class="nav-item"><svg viewBox="0 0 24 24"><path d="M9 4v12a4 4 0 1 0 2 3V8l8-2v8a4 4 0 1 0 2 3V1Z"/></svg>Music</button>
+ <button data-page="gaming" class="nav-item"><svg viewBox="0 0 24 24"><path d="M5 5h14l4 13-3 3-5-5H9l-5 5-3-3Zm2 3v3H4v2h3v3h2v-3h3v-2H9V8Zm10 2v2h2v-2Zm-3 3v2h2v-2Z" fill-rule="evenodd"/></svg>Gaming</button>
+ <button data-page="history" class="nav-item"><svg viewBox="0 0 24 24"><path class="stroke" d="M3 10a9 9 0 1 1 1 7M3 3v7h7m2-4v7l4 2"/></svg>History</button>
+ <button data-page="settings" class="nav-item"><svg viewBox="0 0 24 24"><path d="m9 2-1 3-3 1-3 4 2 2-2 2 3 4 3 1 1 3h6l1-3 3-1 3-4-2-2 2-2-3-4-3-1-1-3Zm3 6a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z" fill-rule="evenodd"/></svg>Settings</button>
+ </nav><span class="sidebar-note">SmartTube for Tizen</span></aside>
+ <section id="content"><header><div><span id="wall-clock"></span><span id="wall-date"></span></div><div class="brand"><strong>S</strong><small>TIZEN</small></div></header>
+ <form id="search-form" class="hidden"><input id="query" type="search" placeholder="Search YouTube" aria-label="Search YouTube" autocomplete="off"><button type="submit" id="search">Search</button></form>
+ <h1 id="section-title">Home</h1><p id="status" role="status" aria-live="polite"></p>
+ <section id="results" aria-label="Videos"></section>
+ <section id="settings-panel" class="hidden"><h2>Playback</h2><button id="default-quality" class="setting-row">Default video quality <span>Auto</span></button><h2>SponsorBlock</h2><button id="sponsor" class="setting-row" aria-pressed="true"></button><button id="skip-options" class="setting-row"></button><p class="settings-note">Quality choices depend on the video and formats supported by this TV. History and preferences are stored on this TV.</p><button id="clear-history" class="setting-row">Clear watch history</button><p class="settings-note">Unofficial Tizen port · 0.2</p></section>
+ </section>
+</main>
+<section id="playback" class="hidden" aria-label="Video player">
+ <object id="av-player" type="application/avplayer"></object><video id="html-player"></video>
+ <div id="player-info"><h2 id="video-title"></h2><p id="player-status"></p><span id="stream-details"></span><div class="progress"><div id="progress-fill"></div></div><div class="transport"><span id="timeline"></span><div id="player-controls"><button id="rewind" aria-label="Back 10 seconds">−10 s</button><button id="play-pause">Pause</button><button id="forward" aria-label="Forward 10 seconds">+10 s</button><button id="quality">Video format <span id="quality-label">Auto</span></button><button id="player-back">Back</button></div></div><p class="player-hint">↑ / ↓ Controls · ← / → Seek · OK Pause / play · Back Close</p></div>
+</section>
+<div id="modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title"><section class="dialog"><h2 id="modal-title">Video format</h2><p id="modal-description"></p><div id="modal-options"></div><p class="dialog-hint">↑ / ↓ Select · OK Apply · Back Cancel</p></section></div>
+<script src="app.js"></script></body></html>

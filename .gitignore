@@ -1,0 +1,16 @@
+node_modules/
+dist/
+artifacts/
+*.wgt
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.pem
+*.key
+profiles.xml
+author-signature.xml
+signature*.xml
