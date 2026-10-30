@@ -9,7 +9,7 @@ Help me install TizenSmartTube on my own Samsung TV.
 
 Repository: https://github.com/giilc/TizenSmartTube
 Read AGENTS.md and docs/AI_INSTALL.md from the repository's main branch.
-Use the v0.2.0 WGT release unless I request another version.
+Use the v0.3.18 WGT release unless I request another version.
 
 First check which local terminal, browser and network tools you actually have.
 Determine my computer OS, ask for my TV's LAN IP and model/Tizen version if
@@ -53,14 +53,14 @@ A development certificate signed for one TV is not a universal certificate for e
 
 Default published package:
 
-- [v0.2.0 release and installation notes](https://github.com/giilc/TizenSmartTube/releases/tag/v0.2.0)
-- [SmartTubeTizen-0.2.0-unsigned.wgt](https://github.com/giilc/TizenSmartTube/releases/download/v0.2.0/SmartTubeTizen-0.2.0-unsigned.wgt)
-- [SHA256SUMS.txt](https://github.com/giilc/TizenSmartTube/releases/download/v0.2.0/SHA256SUMS.txt)
+- [v0.3.18 release and installation notes](https://github.com/giilc/TizenSmartTube/releases/tag/v0.3.18)
+- [SmartTubeTizen-0.3.18-unsigned.wgt](https://github.com/giilc/TizenSmartTube/releases/download/v0.3.18/SmartTubeTizen-0.3.18-unsigned.wgt)
+- [SHA256SUMS.txt](https://github.com/giilc/TizenSmartTube/releases/download/v0.3.18/SHA256SUMS.txt)
 
 Expected SHA-256 for that exact WGT:
 
 ```text
-78f8d9c23ffa06abeb9a7ec0eb57e2b1efb3e8b7a2d9ba3f3918b5e0f686f94e
+2ee84d1f50e383bac37823283798c3257848a0a9ee9601ea81863d367db720fd
 ```
 
 Download to a fresh local folder and compare the hash before extracting or signing. Use `shasum -a 256` on macOS, `sha256sum` on Linux, or `Get-FileHash -Algorithm SHA256` in PowerShell. Stop if the hash differs. This checksum detects a mismatched download; it is not an independent publisher signature. If the user selects another release, use that release's published checksum instead.

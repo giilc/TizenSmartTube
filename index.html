@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1920">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.youtube.com; connect-src https://*.youtube.com https://*.googlevideo.com https://sponsor.ajay.app https://jnn-pa.googleapis.com; img-src 'self' https://*.ytimg.com https://*.ggpht.com; style-src 'self'; media-src blob: https://*.googlevideo.com; object-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.youtube.com; connect-src 'self' blob: https://*.youtube.com https://*.googlevideo.com https://sponsor.ajay.app https://jnn-pa.googleapis.com; img-src 'self' https://*.ytimg.com https://*.ggpht.com; style-src 'self'; media-src blob: https://*.googlevideo.com; worker-src 'self'; object-src 'self'">
 <title>SmartTube Tizen</title><link rel="stylesheet" href="style.css">
 <script src="$WEBAPIS/webapis/webapis.js"></script></head><body>
 <main id="browser">
@@ -17,7 +17,7 @@
  <form id="search-form" class="hidden"><input id="query" type="search" placeholder="Search YouTube" aria-label="Search YouTube" autocomplete="off"><button type="submit" id="search">Search</button></form>
  <h1 id="section-title">Home</h1><p id="status" role="status" aria-live="polite"></p>
  <section id="results" aria-label="Videos"></section>
- <section id="settings-panel" class="hidden"><h2>Playback</h2><button id="default-quality" class="setting-row">Default video quality <span>Auto</span></button><h2>SponsorBlock</h2><button id="sponsor" class="setting-row" aria-pressed="true"></button><button id="skip-options" class="setting-row"></button><p class="settings-note">Quality choices depend on the video and formats supported by this TV. History and preferences are stored on this TV.</p><button id="clear-history" class="setting-row">Clear watch history</button><p class="settings-note">Unofficial Tizen port · 0.2</p></section>
+ <section id="settings-panel" class="hidden"><h2>Playback</h2><button id="default-quality" class="setting-row">Default video quality <span>Auto</span></button><h2>SponsorBlock</h2><button id="sponsor" class="setting-row" aria-pressed="true"></button><button id="skip-options" class="setting-row"></button><p class="settings-note">Quality choices depend on the video and formats supported by this TV. History and preferences are stored on this TV.</p><button id="clear-history" class="setting-row">Clear watch history</button><p class="settings-note">Unofficial Tizen port · 0.3.18</p></section>
  </section>
 </main>
 <section id="playback" class="hidden" aria-label="Video player">

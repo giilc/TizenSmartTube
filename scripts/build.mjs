@@ -4,6 +4,7 @@ await rm('dist',{recursive:true,force:true});
 await mkdir('dist',{recursive:true});
 await build({entryPoints:['src/app.mjs'],outfile:'dist/app.js',bundle:true,format:'iife',
   platform:'browser',target:['chrome85'],minify:true,legalComments:'eof'});
+await build({entryPoints:['src/tv-decipher-worker.mjs'],outfile:'dist/tv-decipher-worker.js',bundle:true,format:'iife',platform:'browser',target:['chrome85'],loader:{'.txt':'text'},minify:true,legalComments:'eof'});
 for(const name of ['index.html','style.css','config.xml','icon.png','THIRD_PARTY_NOTICES.md','LICENSE'])
   await copyFile(name,'dist/'+name);
 await copyFile('node_modules/hls.js/LICENSE','dist/HLS-LICENSE.txt');

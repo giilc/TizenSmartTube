@@ -27,3 +27,8 @@ test('changing formats preserves video identity and clears a previous adaptive c
  const state=withFormat(video,{id:'auto',url:'https://media',label:'Auto'});
  assert.equal(state.id,'abcdefghijk');assert.equal(state.selectedFormatId,'auto');assert.equal(state.adaptiveInfo,undefined);assert.equal(state.formats,video.formats);
 });
+
+test('quality preferences never select an unavailable codec and handle no playable formats',()=>{
+ const formats=[{id:'bad',height:1080,fps:60,available:false},{id:'good',height:720,fps:30,available:true}];
+ assert.equal(preferredFormat(formats,1080).id,'good');assert.equal(preferredFormat(formats,0).id,'good');assert.equal(preferredFormat([formats[0]],0),undefined);
+});

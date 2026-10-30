@@ -82,3 +82,30 @@ test('quality list failure retains the already validated automatic master stream
  const p=new VideoProvider(async()=>({getBasicInfo:async()=>({playability_status:{status:'OK'},streaming_data:{hls_manifest_url:'https://manifest.googlevideo.com/master'}})}),async()=>{throw Error('offline');});
  const source=await p.playback('aqz-KE-bpKQ');assert.equal(source.selectedFormatId,'auto');assert.equal(source.formats.length,1);assert.match(source.formatsError,/unavailable/);
 });
+
+test('a 360p combined stream does not stop discovery of later adaptive resolutions',async()=>{
+ const seen=[];
+ const make=(itag,video)=>({itag,has_video:video,has_audio:!video,height:video?1080:0,width:1920,fps:30,bitrate:video?4000000:128000,
+  mime_type:video?'video/mp4; codecs="avc1.640028"':'audio/mp4; codecs="mp4a.40.2"',init_range:{start:0,end:600},index_range:{start:601,end:1000},decipher:async()=> 'https://video.googlevideo.com/'+itag});
+ const p=new VideoProvider(async()=>({session:{},getBasicInfo:async(id,{client})=>{seen.push(client);return {
+  playability_status:{status:'OK'},basic_info:{duration:120},streaming_data:client==='IOS'?{adaptive_formats:[make(137,true),make(140,false)]}:{formats:[
+   {itag:18,has_video:true,has_audio:true,height:360,fps:30,mime_type:'video/mp4',decipher:async()=> 'https://video.googlevideo.com/360'}]}};}}));
+ const source=await p.playback('aqz-KE-bpKQ');assert.equal(source.engine,'dash');assert.equal(source.height,1080);assert.equal(source.audio.itag,140);
+ assert.deepEqual(seen,['VISIONOS','TV','IOS']);
+});
+test('a playable progressive fallback survives later metadata failure without endless retries',async()=>{
+ let count=0;
+ const p=new VideoProvider(async()=>({session:{},getBasicInfo:async()=>{if(++count>1)throw Error('offline');return {
+  playability_status:{status:'OK'},streaming_data:{formats:[{itag:18,has_video:true,has_audio:true,height:360,mime_type:'video/mp4',decipher:async()=> 'https://video.googlevideo.com/360'}]}};}}));
+ const source=await p.playback('aqz-KE-bpKQ');assert.equal(source.height,360);assert.equal(count,2);
+});
+
+test('adaptive discovery keeps combined MP4 fallbacks from earlier clients',async()=>{
+ const {markFormatSupport}=await import('../src/adaptive.mjs');
+ const {preferredFormat,withFormat}=await import('../src/ui-state.mjs');
+ const make=(itag,video)=>({itag,has_video:video,has_audio:!video,height:video?1080:0,width:1920,fps:30,bitrate:100000,
+ mime_type:video?'video/webm; codecs="vp9"':'audio/webm; codecs="opus"',init_range:{start:0,end:600},index_range:{start:601,end:1000},decipher:async()=> 'https://video.googlevideo.com/'+itag});
+ const p=new VideoProvider(async()=>({session:{},getBasicInfo:async(id,{client})=>({playability_status:{status:'OK'},basic_info:{duration:120},streaming_data:client==='VISIONOS'?{formats:[{itag:18,has_video:true,has_audio:true,height:360,mime_type:'video/mp4',decipher:async()=> 'https://video.googlevideo.com/360'}]}:{adaptive_formats:[make(248,true),make(251,false)]}})}));
+ const source=await p.playback('aqz-KE-bpKQ');
+ const choice=preferredFormat(markFormatSupport(source.formats,()=>false));assert.equal(choice?.id,'mp4-18');assert.equal(withFormat(source,choice).engine,'av');
+});

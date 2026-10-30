@@ -8,7 +8,7 @@ test('HLS external audio remains attached through master with exact bitrate cons
  assert.equal(formats[0].id,'auto');
  assert.equal(formats[1].url,master);
  assert.equal(formats[1].adaptiveInfo,'BITRATES=2500000|STARTBITRATE=HIGHEST');
- assert.equal(formats[1].height,1080);assert.equal(formats[1].fps,60);assert.match(formats[1].label,/1080p60.*H.264/);
+ assert.equal(formats[1].height,1080);assert.equal(formats[1].fps,60);assert.match(formats[1].label,/1080p.*60 fps.*H.264/);
 });
 test('multiplexed HLS can choose a direct variant and excludes audio-only or untrusted variants',()=>{
  const formats=parseHlsFormats(`#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1000000,RESOLUTION=1280x720,CODECS="avc1.4d401f,mp4a.40.2"\n720.m3u8\n#EXT-X-STREAM-INF:BANDWIDTH=120000,CODECS="mp4a.40.2"\naudio.m3u8\n#EXT-X-STREAM-INF:BANDWIDTH=9000000,RESOLUTION=3840x2160,CODECS="avc1.4d401f,mp4a.40.2"\nhttps://untrusted.example/video.m3u8\n`,master);

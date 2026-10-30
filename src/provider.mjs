@@ -1,7 +1,8 @@
 import {normalizeVideos, normalizeSegments} from './core.mjs';
+import {adaptiveFormats} from './adaptive.mjs';
 import {mediaUrl,parseHlsFormats,formatLabel} from './formats.mjs';
 
-// Metadata/player-script requests only; media playback goes directly to AVPlay.
+// Metadata/player-script requests only; media is loaded by the selected TV playback engine.
 // Buffer with a cap so the deadline includes the response body, not just headers.
 export async function timedFetch(input, options = {}, timeoutMs = 18000) {
   const controller = new AbortController();
@@ -54,14 +55,15 @@ export class VideoProvider {
     const client=await this.client();
     // VISIONOS supplies adaptive HLS on this TV's tested path; TV may only
     // expose 360p combined MP4. Prefer the complete manifest before fallback.
-    let lastError='YouTube did not supply a playable stream.';
+    let lastError='YouTube did not supply a playable stream.',fallback=null;
     for(const clientName of ['VISIONOS','TV','IOS','ANDROID_VR']) {
-      const info=await client.getBasicInfo(id,{client:clientName});
+      let info;
+      try{info=await client.getBasicInfo(id,{client:clientName});}catch(error){if(fallback)return fallback;throw error;}
       const state=info.playability_status?.status;
       if(state!=='OK') {
         lastError=info.playability_status?.reason || 'YouTube did not allow playback.';
         // Do not turn an account/age/bot challenge into an automatic retry loop.
-        if(state!=='UNPLAYABLE'&&state!=='ERROR')throw Error(lastError);
+        if(state!=='UNPLAYABLE'&&state!=='ERROR'){if(fallback)return fallback;throw Error(lastError);}
         continue;
       }
       const data=info.streaming_data || {};
@@ -77,25 +79,30 @@ export class VideoProvider {
           formats=parseHlsFormats(await response.text(),url);
         }catch{formatsError='Quality list unavailable; automatic playback remains available.';}
       }else{
+        if(!info.basic_info?.is_live)formats=await adaptiveFormats(data.adaptive_formats || [],client.session?.player,Number(info.basic_info?.duration));
         const progressive=(data.formats || []).filter(f=>f.has_video&&f.has_audio&&f.mime_type?.startsWith('video/mp4'))
           .sort((a,b)=>(b.height || 0)-(a.height || 0));
-        if(!progressive.length){
+        if(!progressive.length&&!formats.length){
           lastError=data.server_abr_streaming_url?'This stream requires SABR playback, which is not implemented yet.':
             'YouTube supplied no compatible HLS, DASH or combined MP4 stream.';
           continue;
         }
         for(const f of progressive){
           const url=mediaUrl(await f.decipher(client.session?.player));
-          const choice={id:'mp4-'+(f.itag ?? formats.length),url,protocol:'mp4',height:f.height || 0,
+          const choice={id:'mp4-'+(f.itag ?? formats.length),url,protocol:'mp4',engine:'av',video:undefined,audio:undefined,height:f.height || 0,
             fps:f.fps || 0,codec:f.mime_type?.match(/codecs="([^"]+)"/)?.[1] || '',bitrate:f.bitrate || 0};
           choice.label=formatLabel(choice);formats.push(choice);
         }
       }
+      if(fallback)for(const f of fallback.formats)if(!formats.some(choice=>choice.id===f.id))formats.push(f);
       const selected=formats[0];
-      return {...selected,formats,selectedFormatId:selected.id,formatsError,client:clientName,
+      const source={...selected,formats,selectedFormatId:selected.id,formatsError,client:clientName,
         title:info.basic_info?.title || '',duration:info.basic_info?.duration || 0,
         quality:selected.label,live:!!info.basic_info?.is_live};
+      if(selected.protocol==='mp4'){fallback ??= source;continue;}
+      return source;
     }
+    if(fallback)return fallback;
     throw Error(lastError);
   }
   async segments(id,duration,categories=['sponsor']) {

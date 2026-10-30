@@ -91,3 +91,13 @@ HLS.js 1.7.3: Copyright its contributors, Apache License 2.0. Source: https://gi
 Meriyah (ISC, https://github.com/meriyah/meriyah) and fflate (MIT, https://github.com/101arrowz/fflate) are included through YouTube.js. Their full notices are included in licenses/meriyah.txt and licenses/fflate.txt. Exact upstream licenses for YouTube.js and core-js are also preserved in licenses/.
 
 @bufbuild/protobuf (https://github.com/bufbuild/protobuf-es) is bundled through YouTube.js. Buf Technologies modules are Apache-2.0; the Google varint implementation is BSD-3-Clause. Copyright notices and terms are preserved in licenses/protobuf-buf-notice.txt, licenses/Apache-2.0.txt and licenses/protobuf-google-bsd.txt.
+
+## dash.js 4.7.4
+
+Source: https://github.com/Dash-Industry-Forum/dash.js/tree/v4.7.4 . BSD-3-Clause; complete terms in licenses/dashjs.txt. The bundled media player includes third-party notices in licenses/dashjs-bundled-notices.txt, with full dependency licenses alongside them.
+
+## yt-dlp EJS 0.8.0
+
+Source: https://github.com/yt-dlp/ejs . Solver bundles in vendor/ejs/ are pinned to the0.8.0 PyPI wheel, SHA-25679300e5fca7f937a1eeede11f0456862c1b41107ce1d726871e0207424f4bdb4. EJS is Unlicense (licenses/yt-dlp-ejs.txt). Bundled Meriyah6.1.4 is ISC and Astring1.9.0 is MIT; full bundled notices are preserved in licenses/ejs-bundled.txt.
+
+The TV request/profile and TV-script matching approach was investigated using OmegaTube (https://github.com/IIyn/omegatube , GPL-3.0). Its C++/C# source is not included in this app. The JavaScript provider here is independently implemented; the EJS solver is obtained separately from its upstream package.

@@ -17,8 +17,12 @@ export function codecLabel(codec=''){
   return [video,audio].filter(Boolean).join(' / ') || codec || 'Unknown codec';
 }
 
+export function resolutionLabel({height=0,fps=0}){
+ return (height?height+'p':'Adaptive')+' · '+(Number.isFinite(fps)&&fps>0?Number(fps.toFixed(3))+' fps':'FPS unknown');
+}
+
 export function formatLabel({height=0,fps=0,codec='',protocol='',bitrate=0}){
-  return `${height?height+'p'+(fps>30?Math.round(fps):''):'Adaptive'} · ${codecLabel(codec)} · ${protocol.toUpperCase()}${bitrate?' · '+(bitrate/1e6).toFixed(2)+' Mbps':''}`;
+  return `${resolutionLabel({height,fps})} · ${codecLabel(codec)} · ${protocol.toUpperCase()}${bitrate?' · '+(bitrate/1e6).toFixed(2)+' Mbps':''}`;
 }
 
 export function parseHlsFormats(text,masterUrl){

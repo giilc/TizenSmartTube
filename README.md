@@ -9,7 +9,7 @@ An experimental, standalone YouTube client for Samsung Tizen TVs, inspired by [S
 ## What works
 
 - Home, Search, Music and Gaming browsing with large thumbnails and remote focus navigation.
-- Direct video playback with bundled HLS.js/MediaSource and a native Samsung AVPlay fallback.
+- Direct video playback with bundled HLS.js and dash.js/MediaSource and a native Samsung AVPlay fallback.
 - Video format selection from the available stream manifest, including resolution, codec and frame rate; persistent default maximum quality.
 - Local viewing history and settings, without storing expiring stream URLs.
 - SponsorBlock presets and automatic skip logic adapted from SmartTube.
@@ -17,7 +17,9 @@ An experimental, standalone YouTube client for Samsung Tizen TVs, inspired by [S
 
 ## Tested status and limitations
 
-Version **0.2.0** has been installed on one Samsung TV running **Tizen 6.5**. Search, playback and switching between decoded 720p and 480p were exercised with Big Buck Bunny; picture and audio at 720p were confirmed by the tester. The automated suite covers stream selection, timeouts, remote navigation, TV compatibility and player failures.
+Version **0.3.18** has been installed on one Samsung TV running **Tizen 6.5**, with picture and audio confirmed by the tester. The provider now uses a matching Samsung TV client and player script, with URL deciphering in a short-lived isolated worker.
+
+On that TV, Endless Reader A–B played beyond 125 seconds at 1080p/60fps. The reported Ms Rachel video played beyond two minutes in total, starting at 1080p/30fps and switching to 720p/30fps after about 90 seconds. A paused quality change preserved position and resumed. These checks passed the point where the previous HTTP 403 / DASH error 27 occurred. Formats unsupported by the TV remain visible but cannot be selected. The automated suite has 76 passing tests covering provider sessions, adaptive playback, format selection, remote navigation and player failures.
 
 This is a starting point for community development, not a promise of playback on every video or TV:
 
@@ -33,7 +35,7 @@ This is a starting point for community development, not a promise of playback on
 
 Use the [AI-assisted installation guide](docs/AI_INSTALL.md), which includes a copy-and-paste prompt, verified WGT download, certificate setup, installation commands and troubleshooting. Local agents can follow [AGENTS.md](AGENTS.md); [CLAUDE.md](CLAUDE.md) imports the same instructions for Claude Code. Assistants without local computer/network tools can guide you through the steps.
 
-Prefer the [downloadable v0.2.0 WGT](https://github.com/giilc/TizenSmartTube/releases/tag/v0.2.0) if you just want to install the app. You still need to sign it for your TV, but you do not need to compile the source.
+Prefer the [downloadable v0.3.18 WGT](https://github.com/giilc/TizenSmartTube/releases/tag/v0.3.18) if you just want to install the app. You still need to sign it for your TV, but you do not need to compile the source.
 
 ## Build
 
@@ -47,7 +49,7 @@ npm test
 npm run package
 ```
 
-`npm run build` creates the bundled assets in `dist/`. `npm run package` also creates `SmartTubeTizen-0.2.0-unsigned.wgt`. **The unsigned package must be signed for your TV before installation.** Build output and signing credentials are not checked into this repository.
+`npm run build` creates the bundled assets in `dist/`. `npm run package` also creates `SmartTubeTizen-0.3.18-unsigned.wgt`. **The unsigned package must be signed for your TV before installation.** Build output and signing credentials are not checked into this repository.
 
 For a desktop layout preview, run `python3 -m http.server 8876 --directory dist` and open `http://localhost:8876`. A browser preview does not validate Samsung playback APIs or TV network permissions.
 
@@ -95,8 +97,12 @@ Confirm the installer reports successful completion. If signing cannot find your
 | --- | --- |
 | `src/app.mjs` | UI, remote events and playback coordination |
 | `src/provider.mjs` | On-device YouTube/SponsorBlock requests, validation and timeouts |
-| `src/session.mjs` | YouTube.js browser session integration |
+| `src/session.mjs` | Browsing session and lazy playback-client routing |
 | `src/hls-player.mjs` | HLS.js/MediaSource lifecycle and format switching |
+| `src/adaptive.mjs` | Adaptive track pairing, codec support and DASH manifests |
+| `src/dash-player.mjs` | DASH/MediaSource lifecycle and quality switching |
+| `src/tv-provider.mjs` | Matching TV client requests, server visitor data and TV-script timestamps |
+| `src/tv-decipher-worker.mjs` | TV URL deciphering in an isolated, short-lived worker |
 | `src/player.mjs` | Samsung AVPlay lifecycle and error handling |
 | `src/formats.mjs` | Manifest parsing and audio/variant preservation |
 | `src/core.mjs` | Video normalization and SponsorBlock skip decisions |
